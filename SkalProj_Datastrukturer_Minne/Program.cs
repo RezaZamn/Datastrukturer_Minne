@@ -368,7 +368,7 @@ namespace SkalProj_Datastrukturer_Minne
 
                 }
 
-                //Rensar stacken för nästa körning
+                //Rensar stacken inför nästa körning
                 stack.Clear();
                 Console.WriteLine();
 
