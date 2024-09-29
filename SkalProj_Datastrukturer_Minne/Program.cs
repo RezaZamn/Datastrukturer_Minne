@@ -142,40 +142,52 @@ namespace SkalProj_Datastrukturer_Minne
 
 
             Queue<string> queueListName = new Queue<string>();
-            string inputName;
+            string inputName; 
             bool isAlive = true;
 
             do
             {
-                Console.WriteLine("(e) lägger till med Enqueue, (d) tar bort med Dequeue, 'k' för att avsluta");
-                inputName = Console.ReadLine();
-                string inputValue = inputName.Substring(1).Trim();
-                char letter = inputName[0];
+                Console.WriteLine("(e) lägger till med Enqueue, (d) tar bort med Dequeue, 'k' för att avsluta, 'h huvud meny");
+                inputName = Console.ReadLine(); //Inmatar sträng(namn)
+                string inputValue = inputName.Substring(1).Trim(); //Startar från andra tecknet av strängen och tar bort mellanslag
+                char letter = inputName[0];  //Första inmatnings värde
+
+                //Val av användaren
                 switch (letter)
                 {
                     case 'e':
+                    case 'E':
                         queueListName.Enqueue(inputValue);
                         break;
 
                     case 'd':
+                    case 'D':
                         queueListName.Dequeue();
+                        break;
+
+                    case 'h':
+                    case 'H':
+                        isAlive = false;
                         break;
 
 
                     case 'k':
+                    case 'K':
                         isAlive = false;
                         break;
 
 
                 }
+                //Skriver ut namn som står kvar i kön
+                foreach (string names in queueListName)
+                {
+                    Console.WriteLine($"Namn {names} kvar i kön");
+                }
+                Console.WriteLine();
 
             } while (isAlive);
 
-            foreach (string names in queueListName)
-            {
-                Console.WriteLine($"Namn {names} kvar i kön");
-            }
-            Console.WriteLine();
+           
 
         }
 
@@ -199,7 +211,7 @@ namespace SkalProj_Datastrukturer_Minne
             do
             {
                 Console.WriteLine("(1) För att pusha ett namn på stack" +
-                                 " \n(2) För att pop ett namn från stack" +
+                                 " \n(2) För att poppa från stack" +
                                   "\n(3) För att skriva ut alla namn på stack" +
                                  " \n(4) För att få en stäng ömvänd" +
                                  "\n(5) För att avsluta programmet");
@@ -210,7 +222,7 @@ namespace SkalProj_Datastrukturer_Minne
                 {
                     case "1":
                         Console.WriteLine("Skriv en text att lägga till på stacken:");
-                        inputStack = Console.ReadLine();
+                        inputStack = Console.ReadLine(); //Inmatning en sträng
                         stack.Push(inputStack);
                         Console.WriteLine($"{inputStack} har lagts till på stacken.");
                         Console.WriteLine();
@@ -219,11 +231,12 @@ namespace SkalProj_Datastrukturer_Minne
 
 
                     case "2":
-                        stack.Pop();
+                        stack.Pop();  //Poppar värden på toppen av stacken
                         Console.WriteLine();
                         break;
 
                     case "3":
+                        //Skriver ut namnen som är kvar på stacken
                         foreach (string item in stack)
                         {
                             Console.WriteLine($"Namn {item} finns på stack: ");
@@ -250,21 +263,21 @@ namespace SkalProj_Datastrukturer_Minne
 
             } while (true);
 
-
+            //En metod som omvandlar en sträng till en omvänd from
             static void ReverseText(string input)
             {
                 Stack stack = new Stack();
 
                 for (int i = 0; i < input.Length; i++)
                 {
-                    stack.Push(input[i]);
+                    stack.Push(input[i]); //Lägger aktuella indexen på stacken
                 }
 
                 Console.WriteLine("Antal bokstäver i strängen: " + stack.Count);
 
                 for (int i = 0; i < input.Length; i++)
                 {
-                    Console.Write(stack.Pop());
+                    Console.Write(stack.Pop()); //Skriver ut samtidig som Poppar från stacken
 
                 }
 
@@ -276,15 +289,93 @@ namespace SkalProj_Datastrukturer_Minne
         }
 
         static void CheckParanthesis()
+        {
+            /*
+             * Use this method to check if the paranthesis in a string is Correct or incorrect.
+             * Example of correct: (()), {}, [({})],  List<int> list = new List<int>() { 1, 2, 3, 4 };
+             * Example of incorrect: (()]), [), {[()}],  List<int> list = new List<int>() { 1, 2, 3, 4 );
+             */
+            bool isValid = true;
+
+            while (isValid)
             {
-                /*
-                 * Use this method to check if the paranthesis in a string is Correct or incorrect.
-                 * Example of correct: (()), {}, [({})],  List<int> list = new List<int>() { 1, 2, 3, 4 };
-                 * Example of incorrect: (()]), [), {[()}],  List<int> list = new List<int>() { 1, 2, 3, 4 );
-                 */
+                Stack stack = new Stack();
+                Console.WriteLine("Write a text to check if wellformed or not: ");
+                string str = Console.ReadLine();
+
+                //Programmet avslutar om ingen text inmatas
+                if (string.IsNullOrEmpty(str))
+                {
+                    isValid = false;
+                    break;
+                }
+
+                for (int i = 0; i < str.Length; i++)  //Loopen går genom hela stängen
+                {
+                    char currentIndex = str[i];       //Den akutella index som loopen ska gå genom
+
+                    //Kollar om symbolen finns i strängen
+                    if (currentIndex == '(' || currentIndex == '{' || currentIndex == '[')
+                    {
+                        stack.Push(currentIndex); // Om fångade symbolen lägger den på stacken
+                        Console.WriteLine("Symbol on stack: " + currentIndex);
+
+                    }
+
+
+                    //Kollar Om det finns bara stängning av symbolen
+                    else if (currentIndex == ')' || currentIndex == '}' || currentIndex == ']')
+                    {
+                        //Om stacken är tom programmet går till nästa körning
+                        if (stack.Count == 0)
+                        {
+                            Console.WriteLine("Incorrect forming");
+                            isValid = false;
+                            break;
+                        }
+
+                        //Poppar från stacken
+                        char poped = (char)stack.Pop();
+                        Console.WriteLine("Poped symbol: " + poped);
+
+                        //Kontrollerar om den stängningsymbolen matchas med den sista öppnade
+                        if ((currentIndex == ')' && poped != '(') ||
+                           (currentIndex == '}' && poped != '{') ||
+                           (currentIndex == ']' && poped != '['))
+                        {
+                            Console.WriteLine("Incorrect forming");
+                            isValid = false;
+                            break;
+                        }
+
+                    }
+
+                }
+
+                if (isValid)
+                {
+                    //Kollar om stacken är tom
+                    if (stack.Count == 0)
+                    {
+                        Console.WriteLine("Correct forming");
+                    }
+
+                    //Det finns öppnade symboler kvar som inte har matchas
+                    else
+                    {
+                        Console.WriteLine("Incorrect forming");
+                    }
+
+                }
+
+                //Rensar stacken för nästa körning
+                stack.Clear();
+                Console.WriteLine();
+
 
             }
+        }
 
-        
+
     }
 }
