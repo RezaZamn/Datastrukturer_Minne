@@ -81,17 +81,19 @@ namespace SkalProj_Datastrukturer_Minne
             do
             {
                 string input = Console.ReadLine();
-                char nav = input[0];
-                string value = input.Substring(1).Trim();
+                char nav = input[0];   //Första index som matas in av användaren
+                string value = input.Substring(1).Trim(); //Hela inmatningen från andra index
                 Console.WriteLine("Lägga till en person med (+) Ta bort med (-), Avsluta med (0), (h) för huvud meny.");
 
 
                 switch (nav)
                 {
+                    //Lägger till listan 
                     case '+':
                         theList.Add(value);
                         break;
 
+                    //Tar bort från listan
                     case '-':
 
                         if (theList.Contains(value))
@@ -100,22 +102,29 @@ namespace SkalProj_Datastrukturer_Minne
                         }
                         break;
 
+                    //Avslutar programmet
                     case '0':
                         Environment.Exit(0);
                         break;
 
+
+                     //Användaren väljer att gå till huvud menyn
                     case 'h':
                     case 'H':
                         isAlive = false;
                         break;
 
+                    //En utskriv av programmet ifall användaren matade något som inte stämmer
                     default:
                         Console.WriteLine("Använd endast (+) för att lägga till (-) för att ta bort eller (0) för att avsluta.");
                         break;
 
                 }
 
+                //Skriver ut antal personer i listan
                 Console.WriteLine("Antal personer i listan: " + theList.Count);
+
+                //Skriver ut personer i listan
                 foreach (string name in theList)
                 {
                     Console.WriteLine("Person i listan: " + name);
@@ -150,9 +159,9 @@ namespace SkalProj_Datastrukturer_Minne
                 Console.WriteLine("(e) lägger till med Enqueue, (d) tar bort med Dequeue, 'k' för att avsluta, 'h huvud meny");
                 inputName = Console.ReadLine(); //Inmatar sträng(namn)
                 string inputValue = inputName.Substring(1).Trim(); //Startar från andra tecknet av strängen och tar bort mellanslag
-                char letter = inputName[0];  //Första inmatnings värde
+                char letter = inputName[0];  //Första inmatnings värde index
 
-                //Val av användaren
+                //Val av funktion av användaren
                 switch (letter)
                 {
                     case 'e':
@@ -222,7 +231,7 @@ namespace SkalProj_Datastrukturer_Minne
                 {
                     case "1":
                         Console.WriteLine("Skriv en text att lägga till på stacken:");
-                        inputStack = Console.ReadLine(); //Inmatning en sträng
+                        inputStack = Console.ReadLine(); //Inmatning av en sträng
                         stack.Push(inputStack);
                         Console.WriteLine($"{inputStack} har lagts till på stacken.");
                         Console.WriteLine();
@@ -263,7 +272,7 @@ namespace SkalProj_Datastrukturer_Minne
 
             } while (true);
 
-            //En metod som omvandlar en sträng till en omvänd from
+            //En metod som omvandlar en sträng till en omvänd form
             static void ReverseText(string input)
             {
                 Stack stack = new Stack();
@@ -277,7 +286,7 @@ namespace SkalProj_Datastrukturer_Minne
 
                 for (int i = 0; i < input.Length; i++)
                 {
-                    Console.Write(stack.Pop()); //Skriver ut samtidig som Poppar från stacken
+                    Console.Write(stack.Pop()); //Skriver ut samtidig som poppar från stacken
 
                 }
 
@@ -300,7 +309,7 @@ namespace SkalProj_Datastrukturer_Minne
             while (isValid)
             {
                 Stack stack = new Stack();
-                Console.WriteLine("Write a text to check if wellformed or not: ");
+                Console.WriteLine("Write a text to check if the text is wellformed or not: ");
                 string str = Console.ReadLine();
 
                 //Programmet avslutar om ingen text inmatas
@@ -310,14 +319,14 @@ namespace SkalProj_Datastrukturer_Minne
                     break;
                 }
 
-                for (int i = 0; i < str.Length; i++)  //Loopen går genom hela stängen
+                for (int i = 0; i < str.Length; i++)  //Loopen går genom hela strängen
                 {
                     char currentIndex = str[i];       //Den akutella index som loopen ska gå genom
 
                     //Kollar om symbolen finns i strängen
                     if (currentIndex == '(' || currentIndex == '{' || currentIndex == '[')
                     {
-                        stack.Push(currentIndex); // Om fångade symbolen lägger den på stacken
+                        stack.Push(currentIndex); // Om fångade någon av symbolen så lägger den på stacken
                         Console.WriteLine("Symbol on stack: " + currentIndex);
 
                     }
@@ -338,7 +347,7 @@ namespace SkalProj_Datastrukturer_Minne
                         char poped = (char)stack.Pop();
                         Console.WriteLine("Poped symbol: " + poped);
 
-                        //Kontrollerar om den stängningsymbolen matchas med den sista öppnade
+                        //Kontrollerar om den stängningssymbolen matchas med den sista öppnade
                         if ((currentIndex == ')' && poped != '(') ||
                            (currentIndex == '}' && poped != '{') ||
                            (currentIndex == ']' && poped != '['))
